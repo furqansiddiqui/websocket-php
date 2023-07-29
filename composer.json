@@ -1,0 +1,27 @@
+{
+  "name": "furqansiddiqui/websocket-php",
+  "description": "WebSocket Server & Client implementation in PHP",
+  "type": "library",
+  "homepage": "https://github.com/furqansiddiqui/websocket-php",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Furqan A. Siddiqui",
+      "email": "hello@furqansiddiqui.com",
+      "homepage": "https://www.furqansiddiqui.com",
+      "role": "Author"
+    }
+  ],
+  "require": {
+    "php-64bit": "^8.1",
+    "ext-sockets": "*"
+  },
+  "autoload": {
+    "psr-4": {
+      "FurqanSiddiqui\\WebSocket\\": [
+        "src"
+      ]
+    }
+  },
+  "minimum-stability": "dev"
+}
