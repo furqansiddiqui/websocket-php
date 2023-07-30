@@ -128,7 +128,7 @@ class MessageFrame
 
     /**
      * @param string $received
-     * @return static
+     * @return static|null
      * @throws \FurqanSiddiqui\WebSocket\Exception\MessageFramesException
      */
     public static function Open(string $received): static|null
