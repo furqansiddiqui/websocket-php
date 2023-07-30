@@ -9,6 +9,8 @@ namespace FurqanSiddiqui\WebSocket\Exception;
  */
 class MessageFramesException extends WebSocketException
 {
+    public bool $disconnectUser = true;
+
     /**
      * @return static
      */
