@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace FurqanSiddiqui\WebSocket\Messages;
 
 use FurqanSiddiqui\WebSocket\Exception\MessageFramesException;
-use FurqanSiddiqui\WebSocket\Server\User;
 
 /**
  * Class ClientMessage
@@ -19,15 +18,6 @@ class ClientMessage
     private ?MessageFrame $currentFrame = null;
     private array $frames = [];
     private string $buffer = "";
-
-    public function __construct()
-    {
-    }
-
-    private function messageIsComplete(): void
-    {
-
-    }
 
     /**
      * @return string

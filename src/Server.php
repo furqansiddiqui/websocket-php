@@ -7,6 +7,7 @@ use FurqanSiddiqui\WebSocket\Exception\WebSocketException;
 use FurqanSiddiqui\WebSocket\Logger\LoggerInterface;
 use FurqanSiddiqui\WebSocket\Messages\ClientMessage;
 use FurqanSiddiqui\WebSocket\Server\HttpWsHeaders;
+use FurqanSiddiqui\WebSocket\Server\MessageHandleEvent;
 use FurqanSiddiqui\WebSocket\Server\User;
 use FurqanSiddiqui\WebSocket\Server\UsersPool;
 use FurqanSiddiqui\WebSocket\Socket\SocketLastError;
@@ -24,8 +25,11 @@ class Server extends AbstractWebSocket
     public readonly HttpWsHeaders $responseHeaders;
     /** @var \FurqanSiddiqui\WebSocket\Server\UsersPool */
     public readonly UsersPool $users;
+
     /** @var \FurqanSiddiqui\WebSocket\Logger\LoggerInterface Logger interface */
     public LoggerInterface $logs;
+    /** @var \FurqanSiddiqui\WebSocket\Server\MessageHandleEvent */
+    public MessageHandleEvent $msgHandleOn = MessageHandleEvent::LIVE;
 
     /** @var \Closure Callback method for socket_select() call fail */
     private \Closure $changeDetectFail;
@@ -179,6 +183,16 @@ class Server extends AbstractWebSocket
                 } else {
                     // Handle incoming messages
                     $this->users->search($readSocket)?->readToBuffer();
+                }
+            }
+
+            // If configured, handle User Messages?
+            if ($this->msgHandleOn === MessageHandleEvent::EVERY_LOOP) {
+                /** @var User $user */
+                foreach ($this->users as $user) {
+                    while ($user->hasMessages() > 0) {
+                        $this->event_messageReceived($user, $user->getMessage());
+                    }
                 }
             }
 
