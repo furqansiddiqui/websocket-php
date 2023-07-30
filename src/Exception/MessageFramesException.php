@@ -64,7 +64,7 @@ class MessageFramesException extends WebSocketException
      */
     public static function CannotUnsealIncompleteMsg(): static
     {
-        return new static('Cannot unseal an incomplete frame', 1006);
+        return new static('Cannot unseal an incomplete message', 1006);
     }
 
     /**
@@ -73,5 +73,21 @@ class MessageFramesException extends WebSocketException
     public static function UnmaskedMsgFromClient(): static
     {
         return new static('Clients cannot send unmasked messages', 1007);
+    }
+
+    /**
+     * @return static
+     */
+    public static function CannotAppendCompleteMsg(): static
+    {
+        return new static('Cannot append frame to a complete message', 1008);
+    }
+
+    /**
+     * @return static
+     */
+    public static function CannotSealIncompleteMsg(): static
+    {
+        return new static('Cannot seal an incomplete message', 1009);
     }
 }
