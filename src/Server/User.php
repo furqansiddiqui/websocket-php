@@ -181,7 +181,7 @@ class User
         $headers = preg_split("(\r\n|\n|\r)", $request);
         $request = array_shift($headers);
         if (!preg_match("/^GET\s(\/(\w+[\-\w]*)?)+\sHTTP\/1.1$/", $request)) {
-            $this->terminate(400, "Bad Request", ["error" => "Invalid request path/namespace"]);
+            $this->terminate(400, "Bad Request Path", ["error" => "Invalid request path/namespace"]);
             return;
         }
 
@@ -189,7 +189,7 @@ class User
         foreach ($headers as $header) {
             if (preg_match('/^([\w\-]+): (.*)$/', trim($header), $match)) {
                 if ($this->headers->set($match[1], $match[2])) {
-                    $this->terminate(400, "Bad Request",
+                    $this->terminate(400, "Bad Request (Invalid Header)",
                         ["error" => "Invalid header sent", "last" => $this->headers->last()?->name]);
                     return;
                 }
@@ -198,7 +198,7 @@ class User
 
         $websocketSecret = $this->headers->get("sec-websocket-key")?->value;
         if (!$websocketSecret) {
-            $this->terminate(400, "Bad Request",
+            $this->terminate(400, "Bad Request (No Secret Key)",
                 ["error" => "Websocket secret key required", "header" => "sec-websocket-key"]);
             return;
         }
