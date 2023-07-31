@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace FurqanSiddiqui\WebSocket\Logger;
 
-use FurqanSiddiqui\WebSocket\Exception\LoggerException;
 use FurqanSiddiqui\WebSocket\Server\User;
 
 /**
@@ -20,7 +19,6 @@ class DefaultLogger implements LoggerInterface
      * @param string|null $logFilePath
      * @param string $eolChar
      * @param bool $displayTime
-     * @throws \FurqanSiddiqui\WebSocket\Exception\LoggerException
      */
     public function __construct(
         public readonly bool   $useANSIColors = false,
@@ -31,12 +29,12 @@ class DefaultLogger implements LoggerInterface
     {
         if ($logFilePath) {
             if (!@is_file($logFilePath) || !@is_writable($logFilePath)) {
-                throw new LoggerException('Path to log file does not exist or is not writable');
+                throw new \RuntimeException('Path to log file does not exist or is not writable');
             }
 
             $fp = @fopen($logFilePath, "w");
             if (!$fp) {
-                throw new LoggerException('Could not open log file for writing');
+                throw new \RuntimeException('Could not open log file for writing');
             }
 
             $this->logFilePath = $logFilePath;
@@ -75,7 +73,6 @@ class DefaultLogger implements LoggerInterface
      * @param string $ip
      * @param int $port
      * @return void
-     * @throws \FurqanSiddiqui\WebSocket\Exception\LoggerException
      */
     public function connectionReceived(string $ip, int $port): void
     {
@@ -86,7 +83,6 @@ class DefaultLogger implements LoggerInterface
      * @param string $ip
      * @param int $port
      * @return void
-     * @throws \FurqanSiddiqui\WebSocket\Exception\LoggerException
      */
     public function connectionLost(string $ip, int $port): void
     {
@@ -96,7 +92,6 @@ class DefaultLogger implements LoggerInterface
     /**
      * @param \FurqanSiddiqui\WebSocket\Server\User $user
      * @return void
-     * @throws \FurqanSiddiqui\WebSocket\Exception\LoggerException
      */
     public function connectionAccepted(User $user): void
     {
@@ -113,7 +108,6 @@ class DefaultLogger implements LoggerInterface
      * @param int $code
      * @param string|null $message
      * @return void
-     * @throws \FurqanSiddiqui\WebSocket\Exception\LoggerException
      */
     public function connectionTerminated(string $ip, int $port, int $code, ?string $message = null): void
     {
@@ -133,7 +127,6 @@ class DefaultLogger implements LoggerInterface
      * @param int $code
      * @param string $message
      * @return void
-     * @throws \FurqanSiddiqui\WebSocket\Exception\LoggerException
      */
     public function disconnect(User $user, int $code, string $message): void
     {
@@ -148,7 +141,6 @@ class DefaultLogger implements LoggerInterface
     /**
      * @param string $log
      * @return void
-     * @throws \FurqanSiddiqui\WebSocket\Exception\LoggerException
      */
     private function write(string $log): void
     {
@@ -160,7 +152,7 @@ class DefaultLogger implements LoggerInterface
         $prepared .= $this->eolChar;
         if ($this->filePointer) {
             if (!@fwrite($this->filePointer, $prepared)) {
-                throw new LoggerException(sprintf('Could not write %d bytes to log file', strlen($prepared)));
+                throw new \RuntimeException(sprintf('Could not write %d bytes to log file', strlen($prepared)));
             }
 
             return;

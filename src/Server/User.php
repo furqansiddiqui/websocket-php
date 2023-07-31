@@ -319,6 +319,7 @@ class User
             return;
         }
 
+        $reason = is_array($body) && isset($body["error"]) ? $body["error"] : $message;
         $contentType = "text/plain";
         if (is_array($body)) {
             $contentType = "application/json";
@@ -328,14 +329,14 @@ class User
         $response = "\r\nHTTP/1.1 " . $httpStatusCode . " " . $message . "\r\n" .
             "Content-Type: " . $contentType . "\r\n" .
             "Content-Length: " . strlen($body) . "\r\n" .
+            "X-Terminate-Reason: " . $reason . "\r\n" .
             "Connection: close\r\n" .
             "\r\n" . $body;
 
         @socket_write($this->socket, $response);
         $this->closeSocket();
 
-        $this->wsServer->logs->connectionTerminated($this->ip, $this->port, $httpStatusCode,
-            is_array($body) && isset($body["error"]) ? $body["error"] : $message);
+        $this->wsServer->logs->connectionTerminated($this->ip, $this->port, $httpStatusCode, $reason);
     }
 
     /**
