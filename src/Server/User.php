@@ -188,7 +188,7 @@ class User
         // Parse Headers
         foreach ($headers as $header) {
             if (preg_match('/^([\w\-]+): (.*)$/', trim($header), $match)) {
-                if ($this->headers->set($match[1], $match[2])) {
+                if (!$this->headers->set($match[1], $match[2])) {
                     $this->terminate(400, "Bad Request (Invalid Header)",
                         ["error" => "Invalid header sent", "last" => $this->headers->last()?->name]);
                     return;
