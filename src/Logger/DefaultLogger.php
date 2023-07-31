@@ -57,7 +57,7 @@ class DefaultLogger implements LoggerInterface
      */
     private function normaliseIpPort(string $ip, int $port): string
     {
-        return "{cyan}$ip{/}{yellow}:{/}{cyan}$port{/}";
+        return "{cyan}$ip{/}{yellow}@{/}{cyan}$port{/}";
     }
 
     /**
@@ -86,7 +86,7 @@ class DefaultLogger implements LoggerInterface
      */
     public function connectionLost(string $ip, int $port): void
     {
-        $this->write("Connection from " . $this->normaliseIpPort($ip, $port) . " {red}dropped");
+        $this->write("Connection from " . $this->normaliseIpPort($ip, $port) . " was {red}dropped");
     }
 
     /**
@@ -113,7 +113,7 @@ class DefaultLogger implements LoggerInterface
     {
         $message = $message ? " {grey}({yellow}$message{/}{grey}){/}" : null;
         $errorMsg = sprintf(
-            "Connection from %s {red}TERMINATED{/} with error code {red}%d{/}%s",
+            "Connection from %s is {red}TERMINATED{/} with error code {red}%d{/}%s",
             $this->normaliseIpPort($ip, $port),
             $code,
             $message
