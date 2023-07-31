@@ -11,8 +11,6 @@ use FurqanSiddiqui\WebSocket\Server\User;
  */
 interface LoggerInterface
 {
-    public function exception(\Throwable $t);
-
     public function connectionReceived(string $ip, int $port): void;
 
     public function connectionLost(string $ip, int $port): void;

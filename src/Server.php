@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace FurqanSiddiqui\WebSocket;
 
 use FurqanSiddiqui\WebSocket\Exception\WebSocketException;
+use FurqanSiddiqui\WebSocket\Logger\DefaultLogger;
 use FurqanSiddiqui\WebSocket\Logger\LoggerInterface;
 use FurqanSiddiqui\WebSocket\Messages\ClientMessage;
 use FurqanSiddiqui\WebSocket\Server\HttpWsHeaders;
@@ -58,6 +59,7 @@ class Server extends AbstractWebSocket
         public readonly bool   $allowPrivateIPs = true,
         public readonly ?array $allowPaths = ["/"],
         public readonly int    $readChunkSize = 1024,
+        ?LoggerInterface       $logger = null,
     )
     {
         parent::__construct($hostname, $port);
@@ -78,6 +80,7 @@ class Server extends AbstractWebSocket
             throw (new SocketLastError($this->socket))->exception('Failed to set websocket server to non-blocking mode');
         }
 
+        $this->logs = $logger ?? new DefaultLogger();
         $this->timeOuts = new TimeoutsConfig();
         $this->users = new UsersPool($this);
         $this->responseHeaders = new HttpWsHeaders(validate: false);
