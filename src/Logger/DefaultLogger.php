@@ -87,7 +87,7 @@ class DefaultLogger implements LoggerInterface
      */
     public function connectionLost(string $ip, int $port, int $code): void
     {
-        $this->write(sprintf("Connection from %s was {red}dropped{/} (grey)(#{yellow}%d{/}{grey})",
+        $this->write(sprintf("Connection from %s was {red}dropped{/} {grey}(#{yellow}%d{/}{grey})",
             $this->normaliseIpPort($ip, $port), $code));
     }
 
