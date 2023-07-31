@@ -99,7 +99,7 @@ class User
         }
 
         if (!@socket_recv($this->socket, $buffer, $this->wsServer->readChunkSize, MSG_DONTWAIT)) {
-            $this->wsServer->logs->connectionLost($this->ip, $this->port);
+            $this->wsServer->logs->connectionLost($this->ip, $this->port, __LINE__);
             $this->closeSocket();
             return;
         }
@@ -232,7 +232,7 @@ class User
 
         $response[] = "Sec-WebSocket-Accept: " . base64_encode(hash("sha1", $websocketSecret . $this->wsServer->magicString, true));
         if (!@socket_write($this->socket, "\r\n" . implode("\r\n", $response) . "\r\n\r\n")) {
-            $this->wsServer->logs->connectionLost($this->ip, $this->port);
+            $this->wsServer->logs->connectionLost($this->ip, $this->port, __LINE__);
             $this->closeSocket();
             return;
         }
@@ -329,9 +329,9 @@ class User
         $response = "\r\nHTTP/1.1 " . $httpStatusCode . " " . $message . "\r\n" .
             "Content-Type: " . $contentType . "\r\n" .
             "Content-Length: " . strlen($body) . "\r\n" .
-            "X-Terminate-Reason: " . $reason . "\r\n" .
+            "X-Terminate-Reason: " . json_encode($body) . "\r\n" .
             "Connection: close\r\n" .
-            "\r\n" . $body;
+            "\r\n";
 
         @socket_write($this->socket, $response);
         $this->closeSocket();

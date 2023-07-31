@@ -13,7 +13,7 @@ interface LoggerInterface
 {
     public function connectionReceived(string $ip, int $port): void;
 
-    public function connectionLost(string $ip, int $port): void;
+    public function connectionLost(string $ip, int $port, int $code): void;
 
     public function connectionTerminated(string $ip, int $port, int $code, ?string $message = null): void;
 
