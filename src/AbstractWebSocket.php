@@ -36,5 +36,7 @@ abstract class AbstractWebSocket
         if (!$socket) {
             throw new WebSocketException('Failed to create TCP socket', socketError: new SocketLastError(null));
         }
+
+        $this->socket = $socket;
     }
 }

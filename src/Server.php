@@ -49,6 +49,7 @@ class Server extends AbstractWebSocket
      * @param bool $allowPrivateIPs
      * @param array|null $allowPaths
      * @param int $readChunkSize
+     * @param \FurqanSiddiqui\WebSocket\Logger\LoggerInterface|null $logger
      * @throws \FurqanSiddiqui\WebSocket\Exception\WebSocketException
      */
     public function __construct(
