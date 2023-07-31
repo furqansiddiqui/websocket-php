@@ -157,6 +157,7 @@ class DefaultLogger implements LoggerInterface
         }
 
         $prepared = $this->ansiEscapeSeq($log);
+        $prepared .= $this->eolChar;
         if ($this->filePointer) {
             if (!@fwrite($this->filePointer, $prepared)) {
                 throw new LoggerException(sprintf('Could not write %d bytes to log file', strlen($prepared)));
